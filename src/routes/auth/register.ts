@@ -1,5 +1,8 @@
-import { z } from "zod";
 import type { FastifyTypedInstance } from "../../types";
+import {
+	registerResponseDefaultSchema,
+	registerSchema,
+} from "../../schemas/auth/register";
 
 export async function registerRoute(app: FastifyTypedInstance) {
 	return app.post(
@@ -8,17 +11,13 @@ export async function registerRoute(app: FastifyTypedInstance) {
 			schema: {
 				tags: ["Auth"],
 				description: "Register a new user",
-				body: z.object({
-					email: z.string().email(),
-					password: z.string().min(8),
-				}),
+				body: registerSchema,
 				response: {
-					202: z.object({
-						message: z.string(),
-					}),
-					401: z.object({
-						message: z.string(),
-					}),
+					202: registerResponseDefaultSchema.describe(
+						"User registered successfully",
+					),
+					401: registerResponseDefaultSchema.describe("User not registered"),
+					500: registerResponseDefaultSchema.describe("Internal server error"),
 				},
 			},
 		},
