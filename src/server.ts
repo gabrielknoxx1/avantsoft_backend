@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { fastify } from "fastify";
 import { fastifyCors } from "@fastify/cors";
+import cookie from "@fastify/cookie";
 import {
 	validatorCompiler,
 	serializerCompiler,
@@ -17,6 +18,7 @@ const app = fastify().withTypeProvider<ZodTypeProvider>();
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
+app.register(cookie);
 app.register(fastifyCors, { origin: "*" });
 
 app.register(fastifySwagger, {

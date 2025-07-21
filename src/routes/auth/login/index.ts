@@ -1,4 +1,3 @@
-import { z } from "zod";
 import type { FastifyTypedInstance } from "../../../types";
 import {
 	loginResponseDefaultSchema,
@@ -35,8 +34,15 @@ export async function loginRoute(app: FastifyTypedInstance) {
 			if (password !== user.password) {
 				return reply.status(401).send({ message: "Invalid password" });
 			}
-
-			return reply.status(202).send({ token: user.id });
+			const token = user.id;
+			let userId = request.cookies.userId;
+			if (!userId) {
+				reply.setCookie("userId", token, {
+					path: "/",
+					maxAge: 60 * 60 * 24 * 7, // 7 days
+				});
+			}
+			return reply.status(202).send({ token });
 		},
 	);
 }
