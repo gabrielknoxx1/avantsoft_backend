@@ -3,6 +3,7 @@ import {
 	registerResponseDefaultSchema,
 	registerSchema,
 } from "../../schemas/auth/register";
+import { prisma } from "../../services/database/prisma";
 
 export async function registerRoute(app: FastifyTypedInstance) {
 	return app.post(
@@ -22,7 +23,24 @@ export async function registerRoute(app: FastifyTypedInstance) {
 			},
 		},
 		async (request, reply) => {
-			return reply.status(202).send({ message: "Hello World" });
+			const { name, email, password, confirmPassword } = request.body;
+
+			if (password !== confirmPassword) {
+				return reply.status(400).send({ message: "Passwords do not match" });
+			}
+
+			await prisma.user.create({
+				data: {
+					name,
+					email,
+					password,
+					confirmPassword,
+				},
+			});
+
+			return reply
+				.status(202)
+				.send({ message: "User registered successfully" });
 		},
 	);
 }
