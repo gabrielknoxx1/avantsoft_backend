@@ -1,9 +1,9 @@
-import type { FastifyTypedInstance } from "../../types";
+import type { FastifyTypedInstance } from "../../../types";
 import {
 	registerResponseDefaultSchema,
 	registerSchema,
-} from "../../schemas/auth/register";
-import { prisma } from "../../services/database/prisma";
+} from "../../../schemas/auth/register";
+import { prisma } from "../../../services/database/prisma";
 
 export async function registerRoute(app: FastifyTypedInstance) {
 	return app.post(
