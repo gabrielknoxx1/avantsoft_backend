@@ -20,12 +20,11 @@ export async function createCustomerRoute(app: FastifyTypedInstance) {
 			},
 		},
 		async (request, reply) => {
-			const { razaoSocial, email, cnpj, phone, address, description } =
-				request.body;
-
 			if (!request.cookies.userId) {
 				return reply.status(401).send({ message: "User not found" });
 			}
+			const { razaoSocial, email, cnpj, phone, address, description } =
+				request.body;
 
 			await prisma.customer.create({
 				data: {
@@ -35,7 +34,7 @@ export async function createCustomerRoute(app: FastifyTypedInstance) {
 					phone,
 					address: address ?? "",
 					description: description ?? "",
-					userId: request.cookies.userId as string,
+					userId: request.cookies.userId,
 				},
 			});
 			return reply.status(202).send({ message: "Customer created" });
