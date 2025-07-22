@@ -38,5 +38,18 @@ model Customer {
   userId      String
   User        User     @relation(fields: [userId], references: [id])
 
+  Sell Sell[]
+
   @@map("customers")
+}
+
+model Sell {
+  id         String   @id @default(uuid())
+  customerId String
+  sellDate   DateTime
+  totalValue Float
+  customer   Customer @relation(fields: [customerId], references: [id])
+  createdAt  DateTime @default(now())
+
+  @@map("sells")
 }
