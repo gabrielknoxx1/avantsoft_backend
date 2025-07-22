@@ -1,9 +1,7 @@
-import { z } from "zod";
 import type { FastifyTypedInstance } from "../../types";
 import { prisma } from "../../services/database/prisma";
 import {
 	sellsByDayQueryDefaultSchema,
-	sellsByDayQuerySchema,
 	sellsByDayResponseSchema,
 } from "../../schemas/stats/sells-by-day";
 

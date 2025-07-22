@@ -10,6 +10,14 @@ async function seed() {
 		},
 	});
 
+	console.log("User created");
+
+	const user = await prisma.user.findUnique({
+		where: {
+			email: "john222@gmail.com",
+		},
+	});
+
 	await prisma.customer.createMany({
 		data: [
 			{
@@ -20,7 +28,7 @@ async function seed() {
 				phone: "11987654321",
 				address: "Rua das Flores, 123 - São Paulo/SP",
 				description: "Empresa especializada em tecnologia",
-				userId: "99a71efa-85c4-4055-a695-3c3d1f087683",
+				userId: user?.id || "",
 			},
 			{
 				id: "1eb7f637-0d38-431d-ae16-7a70fb3be3e6",
@@ -30,7 +38,7 @@ async function seed() {
 				phone: "11976543210",
 				address: "Av. Paulista, 1000 - São Paulo/SP",
 				description: "Soluções em software e consultoria",
-				userId: "99a71efa-85c4-4055-a695-3c3d1f087683",
+				userId: user?.id || "",
 			},
 			{
 				id: "dddaeaff-5873-45c8-bec4-04631c15722e",
@@ -40,7 +48,7 @@ async function seed() {
 				phone: "11965432109",
 				address: "Rua da Inovação, 456 - Rio de Janeiro/RJ",
 				description: "Transformação digital para empresas",
-				userId: "99a71efa-85c4-4055-a695-3c3d1f087683",
+				userId: user?.id || "",
 			},
 			{
 				id: "6746ff62-5af2-42e4-a555-1a4ded63a790",
@@ -50,7 +58,7 @@ async function seed() {
 				phone: "11954321098",
 				address: "Rua do Comércio, 789 - Belo Horizonte/MG",
 				description: "Distribuição de produtos eletrônicos",
-				userId: "99a71efa-85c4-4055-a695-3c3d1f087683",
+				userId: user?.id || "",
 			},
 			{
 				id: "92f498c2-d8f3-4c24-bd2e-1ab77fb5a32f",
@@ -60,7 +68,7 @@ async function seed() {
 				phone: "11943210987",
 				address: "Av. Brasil, 2000 - Porto Alegre/RS",
 				description: "Prestação de serviços especializados",
-				userId: "99a71efa-85c4-4055-a695-3c3d1f087683",
+				userId: user?.id || "",
 			},
 			{
 				id: "b24daf95-475a-4a0f-8f32-7d3c0fd74ba6",
@@ -70,7 +78,7 @@ async function seed() {
 				phone: "11932109876",
 				address: "Rua dos Construtores, 300 - Salvador/BA",
 				description: "Construção civil e reformas",
-				userId: "99a71efa-85c4-4055-a695-3c3d1f087683",
+				userId: user?.id || "",
 			},
 			{
 				id: "bb808cc2-7116-42bb-a515-83da4489a3fb",
@@ -80,7 +88,7 @@ async function seed() {
 				phone: "11921098765",
 				address: "Estrada Industrial, 1500 - Curitiba/PR",
 				description: "Indústria de alimentos processados",
-				userId: "99a71efa-85c4-4055-a695-3c3d1f087683",
+				userId: user?.id || "",
 			},
 			{
 				id: "1b7b213a-a551-426c-a9cc-723144e0f34e",
@@ -90,7 +98,7 @@ async function seed() {
 				phone: "11910987654",
 				address: "Rodovia dos Transportes, Km 50 - Recife/PE",
 				description: "Transporte e logística nacional",
-				userId: "99a71efa-85c4-4055-a695-3c3d1f087683",
+				userId: user?.id || "",
 			},
 			{
 				id: "8b1345e2-ac95-4ce6-be4b-7f7bca77734e",
@@ -100,7 +108,7 @@ async function seed() {
 				phone: "11909876543",
 				address: "Torre Empresarial, 25º andar - Fortaleza/CE",
 				description: "Consultoria empresarial e estratégica",
-				userId: "99a71efa-85c4-4055-a695-3c3d1f087683",
+				userId: user?.id || "",
 			},
 			{
 				id: "bc122b92-1036-428f-b70d-d70f104cb3a0",
@@ -110,7 +118,7 @@ async function seed() {
 				phone: "11898765432",
 				address: "Shopping Center, Loja 45 - Brasília/DF",
 				description: "Rede de varejo em expansão",
-				userId: "99a71efa-85c4-4055-a695-3c3d1f087683",
+				userId: user?.id || "",
 			},
 			{
 				id: "db84da5f-120a-4925-a8a7-57c80764b3cc",
@@ -120,7 +128,7 @@ async function seed() {
 				phone: "11887654321",
 				address: "Parque Tecnológico, Bloco C - Florianópolis/SC",
 				description: "Soluções em energia solar e eólica",
-				userId: "99a71efa-85c4-4055-a695-3c3d1f087683",
+				userId: user?.id || "",
 			},
 			{
 				id: "cfabe2ce-49d7-4b19-8145-e05748ceb36e",
@@ -130,55 +138,65 @@ async function seed() {
 				phone: "11876543210",
 				address: "Campus Universitário, Prédio 10 - Goiânia/GO",
 				description: "Instituição de ensino técnico e superior",
-				userId: "99a71efa-85c4-4055-a695-3c3d1f087683",
+				userId: user?.id || "",
 			},
 		],
+	});
+
+	console.log("Customers created");
+
+	const customers = await prisma.customer.findMany({
+		where: {
+			userId: user?.id || "",
+		},
 	});
 
 	await prisma.sell.createMany({
 		data: [
 			{
-				customerId: "6746ff62-5af2-42e4-a555-1a4ded63a790",
+				customerId: customers[0].id,
 				sellDate: new Date("2024-01-15"),
 				totalValue: 15750.0,
 			},
 			{
-				customerId: "6746ff62-5af2-42e4-a555-1a4ded63a790",
+				customerId: customers[0].id,
 				sellDate: new Date("2024-01-15"),
 				totalValue: 28900.5,
 			},
 			{
-				customerId: "6746ff62-5af2-42e4-a555-1a4ded63a790",
+				customerId: customers[0].id,
 				sellDate: new Date("2024-03-10"),
 				totalValue: 45200.75,
 			},
 			{
-				customerId: "6746ff62-5af2-42e4-a555-1a4ded63a790",
+				customerId: customers[0].id,
 				sellDate: new Date("2024-04-05"),
 				totalValue: 12300.25,
 			},
 			{
-				customerId: "bc122b92-1036-428f-b70d-d70f104cb3a0",
+				customerId: customers[1].id,
 				sellDate: new Date("2024-05-18"),
 				totalValue: 67800.0,
 			},
 			{
-				customerId: "b24daf95-475a-4a0f-8f32-7d3c0fd74ba6",
+				customerId: customers[1].id,
 				sellDate: new Date("2024-06-22"),
 				totalValue: 33450.8,
 			},
 			{
-				customerId: "b24daf95-475a-4a0f-8f32-7d3c0fd74ba6",
+				customerId: customers[1].id,
 				sellDate: new Date("2024-07-30"),
 				totalValue: 89200.4,
 			},
 			{
-				customerId: "1b7b213a-a551-426c-a9cc-723144e0f34e",
+				customerId: customers[2].id,
 				sellDate: new Date("2024-08-12"),
 				totalValue: 54600.9,
 			},
 		],
 	});
+
+	console.log("Sells created");
 }
 
 seed().then(() => {
