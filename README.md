@@ -32,7 +32,7 @@ npm install -g pnpm@10.12.1
 ### 1. Clone o repositório
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
+git clone <https://github.com/gabrielknoxx1/avantsoft_backend.git>
 cd avantsoft_backend
 ```
 
