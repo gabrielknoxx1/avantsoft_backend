@@ -38,7 +38,6 @@ export async function sellsByDayRoute(app: FastifyTypedInstance) {
 					sellDate: "desc",
 				},
 			});
-			console.log("🚀 ~ sells:", sells);
 			return reply.status(202).send({
 				data: sells.map((sell) => ({
 					date: sell.sellDate,
